@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import ChangingInput from './components/ChangingInput'
-import List from './components/List'
+import Person from './components/Person'
 import axios from 'axios'
 import personService from './services/persons'
 
@@ -45,6 +45,20 @@ const App = () => {
     setNewName('')
     setNumber('')
   }
+
+  const deleatePerson = (id) => {
+    const person = persons.find(person => person.id === id)
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .deleate(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
+
+  const filtered_persons = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -64,8 +78,9 @@ const App = () => {
       </form>
 
       <h2>Numbers</h2>
-      <List persons = {persons} filter = {filter}/>
-
+      <ul>
+        {filtered_persons.map(person => <Person key={person.id} person = {person} deleateSequence={() => deleatePerson(person.id)}/>)}
+      </ul>
     </div>
   )
 }
