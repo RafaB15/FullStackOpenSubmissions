@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import ChangingInput from './components/ChangingInput'
 import Person from './components/Person'
-import axios from 'axios'
 import personService from './services/persons'
 import Notification from './components/Notification'
 
@@ -55,11 +54,14 @@ const App = () => {
     personService
       .create(personObject)
       .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
+        setPersons(persons.concat(returnedPerson.data))
+        setNotification(`${newName} was added`)
+      })
+      .catch(error => {
+        setNotification("The name must be at least 3 characters long") 
       })
     setNewName('')
     setNumber('')
-    setNotification(`${newName} was added`)
     setTimeout(() => {
       setNotification(null)
     }, 5000)
