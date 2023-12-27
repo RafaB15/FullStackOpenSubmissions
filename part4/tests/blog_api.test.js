@@ -88,6 +88,18 @@ test('if likes property is missing from the request, it will default to the valu
     expect(response.body.likes).toBe(0)
 })
 
+test('if title or url properties are missing from the request, the backend responds with the status code 400 Bad Request', async () => {
+    const newBlog = {
+        url: "http://www.test.com",
+    }
+    await api.post('/api/blogs').send(newBlog).expect(400)
+
+    const newBlog2 = {
+        title: "Test blog",
+    }
+    await api.post('/api/blogs').send(newBlog2).expect(400)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
