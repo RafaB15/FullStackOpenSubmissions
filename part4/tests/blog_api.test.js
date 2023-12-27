@@ -65,6 +65,29 @@ test('unique identifier property of the blog posts is named id', async () => {
     expect(response.body[0].id).toBeDefined()
 })
 
+test('we can make a post request succesfully', async () => {
+    const newBlog = {
+        title: "Test blog",
+        url: "http://www.test.com",
+        likes: 7
+    }
+    const response = await api.post('/api/blogs').send(newBlog)
+    expect(response.body.title).toBe(newBlog.title)
+    
+    const blogsAtEnd = await Blog.find({})
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
+})
+
+test('if likes property is missing from the request, it will default to the value 0', async () => {
+    const newBlog = {
+        title: "Test blog",
+        url: "http://www.test.com",
+    }
+    const response = await api.post('/api/blogs').send(newBlog)
+    expect(response.body.likes).toBeDefined()
+    expect(response.body.likes).toBe(0)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
