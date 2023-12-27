@@ -3,10 +3,12 @@ const config = require('./utils/config')
 const logger = require('./utils/logger')
 const cors = require('cors')
 
-const blogRouter = require('./controllers/blogs')
-
 const express = require('express')
 const app = express()
+
+require('express-async-errors') // Async and await errors are automatically passed to the error handling middleware
+
+const blogRouter = require('./controllers/blogs')
 
 logger.info('connecting to', config.MONGODB_URI)
 mongoose.set('strictQuery', false)
