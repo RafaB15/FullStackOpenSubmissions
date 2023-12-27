@@ -100,6 +100,14 @@ test('if title or url properties are missing from the request, the backend respo
     await api.post('/api/blogs').send(newBlog2).expect(400)
 })
 
+test('deleting a blog succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await Blog.find({})
+    const blogToDelete = blogsAtStart[0]
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    const blogsAtEnd = await Blog.find({})
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
