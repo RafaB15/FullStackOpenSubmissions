@@ -108,6 +108,22 @@ test('deleting a blog succeeds with status code 204 if id is valid', async () =>
     expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1)
 })
 
+test('updating a blog succeeds with status code 200 if id is valid', async () => {
+    const blogsAtStart = await Blog.find({})
+    const blogToUpdate = blogsAtStart[0]
+    const updatedBlog = {
+        title: "Not react patterns",
+        url: blogToUpdate.url,
+        likes: blogToUpdate.likes
+    }
+    console.log(updatedBlog)
+    await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedBlog).expect(200)
+    const blogsAtEnd = await Blog.find({})
+    const titles = blogsAtEnd.map(blog => blog.title)
+    expect(titles).toContain('Not react patterns')
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
