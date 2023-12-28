@@ -43,6 +43,7 @@ describe('when there is initially one user in db', () => {
     test('creation fails with proper statuscode and message if username already taken', async () => {
         const newUser = new User({
             username: 'root',
+            name: 'Superuser',
             password: '123456'
         })
 
