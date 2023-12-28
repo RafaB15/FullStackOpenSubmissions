@@ -9,6 +9,7 @@ const app = express()
 require('express-async-errors') // Async and await errors are automatically passed to the error handling middleware
 
 const blogRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
 
 logger.info('connecting to', config.MONGODB_URI)
 mongoose.set('strictQuery', false)
@@ -24,5 +25,6 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/blogs', blogRouter)
+app.use('/api/users', usersRouter)
 
 module.exports = app
