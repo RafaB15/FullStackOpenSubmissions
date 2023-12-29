@@ -13,5 +13,3 @@ export default defineConfig({
     }
   }
 })
-
-console.log('Vite configuration executed!');
