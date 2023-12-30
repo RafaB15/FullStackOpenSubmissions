@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
+
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Toggable'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -122,37 +126,17 @@ const App = () => {
         )
       }
       )}
-      <h2>Create new</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          title:
-          <input 
-            type="text"
-            value={newBlogTitle}
-            name="Title"
-            onChange={({ target }) => setNewBlogTitle(target.value)}
-          />
-        </div>
-        <div>
-          author:
-          <input
-            type="text"
-            value={newBlogAuthor}
-            name="Author"
-            onChange={({ target }) => setNewBlogAuthor(target.value)}
-          />
-        </div>
-        <div>
-          url:
-          <input
-            type="text"
-            value={newBlogUrl}
-            name="Url"
-            onChange={({ target }) => setNewBlogUrl(target.value)}
-          />
-        </div>
-        <button type="submit">create</button>
-      </form>
+      <Togglable buttonLabel="new blog">
+        <BlogForm
+          onSubmit={addBlog}
+          handleTitleChange={({ target }) => setNewBlogTitle(target.value)}
+          titleValue={newBlogTitle}
+          handleAuthorChange={({ target }) => setNewBlogAuthor(target.value)}
+          authorValue={newBlogAuthor}
+          handleURLChange={({ target }) => setNewBlogUrl(target.value)}
+          urlValue={newBlogUrl}
+        />
+      </Togglable>
     </div>
   )
 
