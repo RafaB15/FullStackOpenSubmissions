@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Blog = ({ blog, handleLike, currentUserPublisher, handleRemove}) => {
+const Blog = ({ blog, handleLike, currentUserPublisher, handleRemove }) => {
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
 

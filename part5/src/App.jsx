@@ -10,7 +10,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
@@ -19,7 +19,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs.sort((a, b) => b.likes - a.likes))) 
+      setBlogs( blogs.sort((a, b) => b.likes - a.likes)))
   }, [])
 
   useEffect(() => {
@@ -33,7 +33,6 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
     try {
       const userData = await loginService.login({
         username, password,
@@ -66,13 +65,12 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog).sort((a, b) => b.likes - a.likes))
-      
       setNotification(`${blogObject.title} was added`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
 
-    } catch {
+    } catch (exception) {
 
       setNotification(`Error adding blog: ${exception.message}`)
       setTimeout(() => {
@@ -88,7 +86,7 @@ const App = () => {
         likes: blog.likes + 1
       }
       const updatedBlog = await blogService.update(blog.id, newBlog)
-      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? {...blog, likes: blog.likes + 1} : blog).sort((a, b) => b.likes - a.likes))
+      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? { ...blog, likes: blog.likes + 1 } : blog).sort((a, b) => b.likes - a.likes))
     } catch (exception) {
       setNotification(`Error updating blog: ${exception.message}`)
       setTimeout(() => {
@@ -101,7 +99,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-        <input 
+        <input
           type="text"
           value={username}
           name="Username"
@@ -110,7 +108,7 @@ const App = () => {
       </div>
       <div>
         password
-        <input 
+        <input
           type="password"
           value={password}
           name="Password"
@@ -120,7 +118,6 @@ const App = () => {
       <button type="submit">login</button>
     </form>
   )
-  
   const handleRemove = async (blog) => {
     try {
       if(window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
@@ -139,13 +136,13 @@ const App = () => {
     <div>
       {user.name} logged in
       <button onClick={handleLogout}>logout</button>
-      {blogs.map(blog =>{
+      {blogs.map(blog => {
         return (
-          <Blog 
-            key={blog.id} 
-            blog={blog} 
-            handleLike={() => handleLike(blog)} 
-            handleRemove={() => handleRemove(blog)} 
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleLike={() => handleLike(blog)}
+            handleRemove={() => handleRemove(blog)}
             currentUserPublisher={user && blog.user ? user.username === blog.user.username : false}
           />
         )
