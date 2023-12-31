@@ -19,8 +19,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+      setBlogs( blogs.sort((a, b) => b.likes - a.likes))) 
   }, [])
 
   useEffect(() => {
@@ -66,7 +65,7 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility()
       const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(returnedBlog))
+      setBlogs(blogs.concat(returnedBlog).sort((a, b) => b.likes - a.likes))
       
       setNotification(`${blogObject.title} was added`)
       setTimeout(() => {
@@ -89,7 +88,7 @@ const App = () => {
         likes: blog.likes + 1
       }
       const updatedBlog = await blogService.update(blog.id, newBlog)
-      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? {...blog, likes: blog.likes + 1} : blog))
+      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? {...blog, likes: blog.likes + 1} : blog).sort((a, b) => b.likes - a.likes))
     } catch (exception) {
       setNotification(`Error updating blog: ${exception.message}`)
       setTimeout(() => {
