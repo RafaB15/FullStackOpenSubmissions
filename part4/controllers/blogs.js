@@ -54,7 +54,6 @@ blogRouter.delete('/:id', async (request, response) => {
 
 blogRouter.put('/:id', async (request, response) => {
   const blogBody = request.body
-  console.log(blogBody)
   if (!blogBody.title || !blogBody.url) {
     return response.status(400).json({
       error: 'title or url missing'
@@ -64,7 +63,9 @@ blogRouter.put('/:id', async (request, response) => {
   const blog = {
     title: blogBody.title,
     url: blogBody.url,
-    likes: blogBody.likes
+    likes: blogBody.likes,
+    author: blogBody.author,
+    user: blogBody.user ? blogBody.user.id : undefined,
   }
 
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })

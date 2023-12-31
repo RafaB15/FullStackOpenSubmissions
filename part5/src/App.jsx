@@ -82,6 +82,22 @@ const App = () => {
     }
   }
 
+  const handleLike = async (blog) => {
+    try {
+      const newBlog = {
+        ...blog,
+        likes: blog.likes + 1
+      }
+      const updatedBlog = await blogService.update(blog.id, newBlog)
+      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? {...blog, likes: blog.likes + 1} : blog))
+    } catch (exception) {
+      setNotification(`Error updating blog: ${exception.message}`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -112,7 +128,7 @@ const App = () => {
       <button onClick={handleLogout}>logout</button>
       {blogs.map(blog =>{
         return (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog)} />
         )
       }
       )}
