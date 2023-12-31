@@ -21,6 +21,7 @@ const Blog = ({ blog }) => {
       <div style={showWhenVisible}>
         <div>Url: {blog.url}</div>
         <div>Likes: {blog.likes}</div>
+        {blog.user && <div>User: {blog.user.username}</div>}
       </div>
     </div>
   )
