@@ -120,6 +120,20 @@ const App = () => {
       <button type="submit">login</button>
     </form>
   )
+  
+  const handleRemove = async (blog) => {
+    try {
+      if(window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+        await blogService.remove(blog.id)
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+      }
+    } catch (exception) {
+      setNotification(`Error removing blog: ${exception.message}`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
 
   const blogsForm = () => (
     <div>
@@ -127,7 +141,13 @@ const App = () => {
       <button onClick={handleLogout}>logout</button>
       {blogs.map(blog =>{
         return (
-          <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog)} />
+          <Blog 
+            key={blog.id} 
+            blog={blog} 
+            handleLike={() => handleLike(blog)} 
+            handleRemove={() => handleRemove(blog)} 
+            currentUserPublisher={user && blog.user ? user.username === blog.user.username : false}
+          />
         )
       }
       )}
@@ -136,6 +156,7 @@ const App = () => {
       </Togglable>
     </div>
   )
+
 
   return (
     <div>
