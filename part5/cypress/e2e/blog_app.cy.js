@@ -67,6 +67,11 @@ describe('Blog app', function() {
 
         cy.contains('Likes: 1')
       })
+
+      it('A blog can be deleted', function() {
+        cy.contains('remove').click()
+        cy.contains('Francisco Teste').should('not.exist')
+      })
     })
   })
 })
