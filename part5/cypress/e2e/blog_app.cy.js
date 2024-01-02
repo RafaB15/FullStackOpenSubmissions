@@ -16,4 +16,22 @@ describe('Blog app', function() {
     cy.contains('username')
     cy.contains('password')
   })
+
+  describe('Login',function() {
+    it('succeeds with correct credentials', function() {
+      cy.get('#username').type('fran15')
+      cy.get('#password').type('123456789')
+      cy.get('#login-button').click()
+
+      cy.contains('Francisco logged in')
+    })
+
+    it('fails with wrong credentials', function() {
+      cy.get('#username').type('fran15')
+      cy.get('#password').type('wrong')
+      cy.get('#login-button').click()
+
+      cy.contains('Wrong credentials')
+    })
+  })
 })
