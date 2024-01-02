@@ -34,4 +34,39 @@ describe('Blog app', function() {
       cy.contains('Wrong credentials')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('fran15')
+      cy.get('#password').type('123456789')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('A blog created by Fran')
+      cy.get('#author').type('Francisco Teste')
+      cy.get('#url').type('https://www.fran.io/')
+      cy.get('#create-blog-button').click()
+
+      cy.contains('A blog created by Fran was added')
+    })
+
+    describe('When logged in and a blog exists', function() {
+      beforeEach(function() {
+        cy.contains('new blog').click()
+        cy.get('#title').type('A blog created by Fran')
+        cy.get('#author').type('Francisco Teste')
+        cy.get('#url').type('https://www.fran.io/')
+        cy.get('#create-blog-button').click()
+      })
+
+      it('A blog can be liked', function() {
+        cy.contains('view').click()
+        cy.contains('like').click()
+
+        cy.contains('Likes: 1')
+      })
+    })
+  })
 })
