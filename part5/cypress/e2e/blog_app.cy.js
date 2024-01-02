@@ -72,6 +72,29 @@ describe('Blog app', function() {
         cy.contains('remove').click()
         cy.contains('Francisco Teste').should('not.exist')
       })
+
+      describe('When logged in and a blog exists and another user created it', function() {
+        beforeEach(function() {
+          cy.contains('logout').click()
+
+          const newUser = {
+            username: 'elNuevinio',
+            name: 'Nueve Diez',
+            password: '0910'
+          }
+          cy.request('POST', 'http://localhost:3003/api/users/', newUser)
+
+          cy.get('#username').type('elNuevinio')
+          cy.get('#password').type('0910')
+          cy.get('#login-button').click()
+        })
+
+        it('A blog cannot be deleted', function() {
+          cy.contains('remove').should('not.exist')
+        })
+
+      })
+
     })
   })
 })
