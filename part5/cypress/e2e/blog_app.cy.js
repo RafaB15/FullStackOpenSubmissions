@@ -89,8 +89,39 @@ describe('Blog app', function() {
           cy.get('#login-button').click()
         })
 
-        it('A blog cannot be deleted', function() {
+        it('A blog cannot be deleted by someone other than its creator', function() {
           cy.contains('remove').should('not.exist')
+        })
+
+        it('Blogs are ordered according to likes', function() {
+          cy.contains('view').click()
+          cy.contains('new blog').click()
+          cy.get('#title').type('A blog created by Nuevino')
+          cy.get('#author').type('Nuevino Teste')
+          cy.get('#url').type('https://www.nuev.io/')
+          cy.get('#create-blog-button').click()
+
+          cy.contains('view').click()
+
+          cy.contains('A blog created by Fran').parent().parent().find('#like-button').as('likeButtonFran')
+          cy.contains('A blog created by Nuevino').parent().parent().find('#like-button').as('likeButtonNuevino')
+
+          cy.get('@likeButtonFran').click()
+          cy.wait(1000)
+          cy.get('@likeButtonFran').click()
+          cy.wait(1000)
+
+          cy.get('@likeButtonNuevino').click()
+          cy.wait(1000)
+          cy.get('@likeButtonNuevino').click()
+          cy.wait(1000)
+          cy.get('@likeButtonNuevino').click()
+          cy.wait(1000)
+
+          cy.get('.blog').then(blogs => {
+            cy.wrap(blogs[0]).contains('Likes: 3')
+            cy.wrap(blogs[1]).contains('Likes: 2')
+          })
         })
 
       })
