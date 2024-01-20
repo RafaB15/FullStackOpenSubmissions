@@ -32,6 +32,10 @@ const reducer = (state = initialState, action) => {
       }
       return state.map(anecdote => anecdote.id === action.payload.id ? updated_anecdote : anecdote)
     }
+    case 'NEW_ANECDOTE': {
+      const new_anecdote = asObject(action.payload.content)
+      return [...state, new_anecdote]
+    }
   }
 
   return state
