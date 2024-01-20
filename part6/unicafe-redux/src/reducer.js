@@ -14,12 +14,26 @@ const counterReducer = (state = initialState, action) => {
           good: new_good_count 
         }
       }
-    case 'OK': 
-      return state
-    case 'BAD':
-      return state
+    case 'OK': {
+        const new_ok_count = state.ok + 1
+        return {
+          ...state,
+          ok: new_ok_count
+        }
+      }
+    case 'BAD':{
+        const new_bad_count = state.bad + 1
+        return {
+          ...state,
+          bad: new_bad_count
+        }
+      }
     case 'ZERO':
-      return state
+      return {
+        good: 0,
+        ok: 0,
+        bad: 0
+      }
     default: return state
   }
   
